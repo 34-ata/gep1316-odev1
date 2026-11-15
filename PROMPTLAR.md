@@ -8,15 +8,16 @@ Tarih: 15.11.2026
 ## Prompt 1 – Tasarım (sözde kod, akış şeması, fonksiyonlar)
 
 **Prompt:**
-> GEP1316 dersi için bir komut satırı Python uygulaması yazacağım: küçük bir
-> üretim atölyesi için ürün maliyeti ve satış fiyatı hesaplayıcı.
->
-> Kurallar:
-> - Sadece Python standart kütüphanesi kullan.
-> - Kod başlangıç seviyesinde ve okunabilir olsun; sözlü sınavda her satırı
->   açıklayacağım, o yüzden gereksiz ileri teknik (class, lambda, list
->   comprehension zinciri) kullanma.
-> - Yorumlar Türkçe olsun.
+```
+GEP1316 dersi için bir komut satırı Python uygulaması yazacağım: küçük bir
+üretim atölyesi için ürün maliyeti ve satış fiyatı hesaplayıcı.
+
+Kurallar:
+- Sadece Python standart kütüphanesi kullan.
+- Kod başlangıç seviyesinde ve okunabilir olsun; sözlü sınavda her satırı
+  açıklayacağım, o yüzden gereksiz ileri teknik (class, lambda, list
+  comprehension zinciri) kullanma.
+- Yorumlar Türkçe olsun.
 
 Şimdilik kod yazma. Önce şunları ver:
 1. Programın sözde kodu (pseudocode)
@@ -28,15 +29,19 @@ Girdiler: ürün adı, hammadde maliyeti (TL), işçilik süresi (saat),
 saatlik işçilik ücreti (TL), kâr marjı (%).
 Menü: ürün ekle, ürünleri listele, raporu CSV'ye kaydet, çıkış.
 Hatalı girdide program çökmemeli, uyarı verip tekrar sormalı.
+```
 
 **YZ'nin yanıtı (özet):**
+```
 Sözde kod, Mermaid akış şeması, 11 fonksiyonluk bir liste ve sözlüklerden
 oluşan bir liste yapısı önerdi. Hatalı girdiye karşı try/except içeren bir
 döngü kurdu; virgüllü sayı girişini ve utf-8-sig kodlamasını kendisi önerdi.
+```
 
 **Kararım:** Kısmen kabul
 
 **Gerekçe:**
+```
 - Kabul ettiklerim: Fonksiyonlara bölme ve sözlük yapısı okunabilir, her
   formül tek bir yerde duruyor.
 - YZ hatası: "Kâr marjı" adı altında aslında maliyet üzerine kâr oranı
@@ -48,14 +53,15 @@ döngü kurdu; virgüllü sayı girişini ve utf-8-sig kodlamasını kendisi ön
   (düşük/normal/yüksek uyarısı); ekletim.
 - Eksik: Virgülle ayrılmış CSV, Türkçe ayarlı Excel'de tek sütuna
   yığılıyor; ";" ayırıcı ve virgüllü ondalık istedim.
-
+```
 
   ---
 
 ## Prompt 2 – Düzeltmelerle kodu yazdırma
 
 **Prompt:**
-> Tasarım genel olarak uygun, şu düzeltmelerle kodu yaz:
+```
+Tasarım genel olarak uygun, şu düzeltmelerle kodu yaz:
 
 1. Kavram hatası: "kâr marjı" dediğin şey aslında maliyet üzerine kâr oranı
    (markup). %25 girince gerçek marj %20 çıkıyor (87.5 / 437.5). Formülü koru
@@ -76,29 +82,34 @@ anlatan kısa bir Türkçe docstring koy. Tasarımda olmayan ekstra özellik ekl
 
 Ayrıca az önceki sözde kodu ve Mermaid akış şemasını, bu düzeltmeleri
 yansıtacak şekilde TASARIM.md dosyasına kaydet.
+```
 
 **YZ'nin yanıtı (özet):**
+```
 maliyet_hesaplayici.py'yi (14 fonksiyon, yalnızca csv modülü) ve
 TASARIM.md'yi oluşturdu. İstediğim 4 düzeltmenin hepsini uyguladı:
 kar_orani adı, gerçek marj sütunu, kâr oranı değerlendirmesi, Türkçe
 Excel uyumlu CSV.
+```
 
 **Kararım:** Kabul
 
 **Gerekçe:**
+```
 - Programı kendim çalıştırdım; menü, ürün ekleme ve listeleme çalışıyor.
 - YZ, değerlendirme metnini CSV'ye sütun olarak eklemedi. Gerekçesi:
   CSV yalnızca ürün verisini tutmalı, değerlendirme türetilmiş bir yorum.
   Bu gerekçeyi uygun buldum ve kabul ettim.
 - Kendi testlerimde bu sürümde bir hata buldum (bkz. Prompt 3).
-
+```
 
 ---
 
 ## Prompt 3 – Kendi testimde bulduğum hatanın düzeltilmesi
 
 **Prompt:**
-> Test ederken bir hata buldum: sayi_al() fonksiyonu "nan", "inf" ve "1e400"
+```
+Test ederken bir hata buldum: sayi_al() fonksiyonu "nan", "inf" ve "1e400"
 gibi girdileri kabul ediyor, çünkü float() bunları hata vermeden çeviriyor.
 Hammaddeye nan girince maliyet, fiyat ve kâr "nan" çıkıyor ve CSV'ye de
 öyle yazılıyor. Hatalı girdiyi test ettiğini söylemiştin ama bu durumu
@@ -110,16 +121,20 @@ Düzeltmeler:
 2. csv_kaydet() içinde open/close yerine "with open(...) as dosya:" kullan.
 
 Başka bir şeyi değiştirme. Yaptığın değişikliği satır numarasıyla göster.
+```
 
 **YZ'nin yanıtı (özet):**
+```
 Hatayı kabul etti. sayi_al() içine math.isfinite() kontrolü ekledi ve
 bu kontrolü negatiflik testinden önceye koydu, çünkü nan < 0 her zaman
 False döndüğü için nan eski sırada bütün kontrollerden geçiyordu.
 csv_kaydet() fonksiyonunu with open yapısına çevirdi.
+```
 
 **Kararım:** Kabul (düzeltmeyi kendim test ettikten sonra)
 
 **Gerekçe:**
+```
 - YZ hatası: Claude hatalı girdileri test ettiğini söylemişti, ama yalnızca
   abc, -5 ve 0 girdilerini denemişti. Ben hammaddeye "nan" girdiğimde
   program çökmedi, ama maliyet, fiyat ve kâr "nan" çıktı
@@ -130,39 +145,45 @@ csv_kaydet() fonksiyonunu with open yapısına çevirdi.
   (ekran_goruntuleri/02_nan_duzeltildi.png).
 - Çıkardığım ders: YZ'nin "test ettim" demesi yeterli değil, uç
   durumları kendim denemem gerekiyor.
-
+```
 
   ---
 
 ## Prompt 4 – Tasarım belgesini koda uyumlu hale getirme
 
 **Prompt:**
-> Evet, TASARIM.md'deki sayi_al sözde koduna ve gerekiyorsa akış şemasına
-> sonlu sayı (nan/inf) kontrolünü ekle. Kodda başka bir şeyi değiştirme.
+```
+Evet, TASARIM.md'deki sayi_al sözde koduna ve gerekiyorsa akış şemasına
+sonlu sayı (nan/inf) kontrolünü ekle. Kodda başka bir şeyi değiştirme.
+```
 
 **YZ'nin yanıtı (özet):**
+```
 Sözde koda sonlu sayı kontrolünü ekledi ve bu kontrolün neden negatiflik
 testinden önce gelmesi gerektiğini yorum olarak yazdı. Akış şemasında yeni
 bir dal açmadı; yalnızca "Girdi geçerli mi?" kutusunun tanımını genişletti.
 Fonksiyon tablosunu da güncelledi.
+```
 
 **Kararım:** Kabul
 
 **Gerekçe:**
+```
 - Tasarım belgesi koddan geri kalırsa rapordaki akış şeması gerçek programı
   yansıtmaz; ikisinin tutarlı olması gerekiyordu.
 - Akış şemasına yeni dal eklememesini doğru buldum: hatalı girdi döngüsü
   zaten mevcuttu, yeni bir dal şemayı gereksiz yere karmaşıklaştırırdı.
 - git diff ile yalnızca TASARIM.md'nin değiştiğini, koda dokunulmadığını
   kontrol ettim.
-
+```
 
   ---
 
 ## Prompt 5 – Test senaryolarının hazırlanması
 
 **Prompt:**
-> TESTLER.md dosyası oluştur. İçinde şu sütunlardan oluşan bir test tablosu olsun:
+```
+TESTLER.md dosyası oluştur. İçinde şu sütunlardan oluşan bir test tablosu olsun:
 No | Senaryo | Girdi | Beklenen sonuç | Gerçek sonuç | Durum
 
 10 senaryo yaz, en az 5'i hatalı veya uç girdi olsun. Şunları mutlaka kapsa:
@@ -180,19 +201,77 @@ No | Senaryo | Girdi | Beklenen sonuç | Gerçek sonuç | Durum
 "Gerçek sonuç" ve "Durum" sütunlarını BOŞ bırak; testleri ben çalıştırıp
 dolduracağım. Testleri kendin çalıştırma. Tablonun altına "En zor hata"
 başlığıyla boş bir bölüm ekle.
+```
 
 **YZ'nin yanıtı (özet):**
+```
 TESTLER.md dosyasında 10 senaryo hazırladı: 1 normal, 1 sınır değer
 (kâr oranı 0), 1 biçim (virgüllü ondalık), 7 hatalı/uç girdi. "Gerçek
 sonuç" sütununu istediğim gibi boş bıraktı. Ekranda yuvarlama nedeniyle
 1 kuruşluk fark olabileceğini ve ekranda ondalık ayırıcının nokta, CSV'de
 virgül olduğunu belirtti.
+```
 
 **Kararım:** Kabul
 
 **Gerekçe:**
+```
 - Senaryoları ve beklenen sonuçları YZ'ye yazdırdım ama testleri kendisine
   çalıştırtmadım. Prompt 3'teki deneyimden sonra doğrulamayı kendim
   yapmaya karar verdim.
 - Beklenen hesap sonuçlarını elle kontrol ettim
   (271,50 × 1,125 = 305,4375 → ekranda 305,44).
+```
+
+
+  ---
+
+## Prompt 6 – README'nin yazdırılması
+
+**Prompt:**
+```
+README.md dosyasını baştan yaz. Ödev şunları istiyor: program ne yapar,
+nasıl çalıştırılır, ekran görüntüleri. İçerik:
+
+1. Başlık ve 2-3 cümlelik açıklama: küçük üretim atölyeleri için ürün
+   maliyeti ve satış fiyatı hesaplayıcı; kim kullanır, hangi işi kolaylaştırır.
+2. Özellikler (kısa liste): hesaplanan değerler, kâr oranı değerlendirmesi,
+   hatalı girdi kontrolü, Türkçe Excel uyumlu CSV.
+3. Kâr oranı ile gerçek kâr marjı farkını tek bir örnekle açıklayan kısa not
+   (%25 oran → %20 marj).
+4. Gereksinim ve çalıştırma: Python 3, ek kütüphane gerekmez,
+   "python3 maliyet_hesaplayici.py" komutu.
+5. Kullanım örneği: menü adımları kısa.
+6. Ekran görüntüleri: ekran_goruntuleri/ klasöründeki dosyaları göster
+   (03_test_1.png, 04_test_2.png, 05_test_3.png, 06_csv_excel.png);
+   01 ve 02 numaralı görüntüleri "Bulunan hata ve düzeltmesi" başlığı altına koy.
+7. Dosya yapısı: maliyet_hesaplayici.py, TASARIM.md, TESTLER.md,
+   PROMPTLAR.md, rapor.csv, ekran_goruntuleri/ — her birine birer satır açıklama
+   ve bağlantı.
+8. YZ kullanımı notu ve APA 7 atfı:
+   Anthropic. (2026). Claude [Büyük dil modeli]. https://claude.ai
+
+Ders: GEP1316 Kodlama Okuryazarlığı, Öğr. Gör. Adem ÖZER, 2026-2027 Güz.
+Dosyalarda olmayan bir bilgi uydurma. Sade ve kısa tut.
+```
+
+**YZ'nin yanıtı (özet):**
+```
+İstenen 8 bölümün hepsini içeren bir README yazdı. Ekran görüntülerini
+açıp içeriklerine göre alt yazılar ekledi. Yanıtının sonunda
+TESTLER.md'nin "Gerçek sonuç" sütunlarının ve "En zor hata" bölümünün
+hâlâ boş olduğunu söyledi.
+```
+
+**Kararım:** README'yi kabul ettim, TESTLER.md uyarısını reddettim
+
+**Gerekçe:**
+```
+- README'yi VS Code önizlemesinde kontrol ettim; içerik dosyalarla ve
+  ekran görüntüleriyle tutarlı.
+- YZ hatası: TESTLER.md'yi daha önce doldurup commit etmiştim. Hem
+  VS Code'da hem GitHub'da kontrol ettim, dosya dolu. YZ dosyayı yeniden
+  okumadan, sohbetteki eski bilgiye dayanarak yanlış bir uyarı verdi.
+  YZ'nin "uydurma bilgi yok" demesi de bir doğrulama sayılmaz; kontrolü
+  her seferinde kendim yapmam gerekiyor.
+```
