@@ -9,14 +9,14 @@ Tarih: 15.11.2026
 
 **Prompt:**
 > GEP1316 dersi için bir komut satırı Python uygulaması yazacağım: küçük bir
-üretim atölyesi için ürün maliyeti ve satış fiyatı hesaplayıcı.
-
-Kurallar:
-- Sadece Python standart kütüphanesi kullan.
-- Kod başlangıç seviyesinde ve okunabilir olsun; sözlü sınavda her satırı
-  açıklayacağım, o yüzden gereksiz ileri teknik (class, lambda, list
-  comprehension zinciri) kullanma.
-- Yorumlar Türkçe olsun.
+> üretim atölyesi için ürün maliyeti ve satış fiyatı hesaplayıcı.
+>
+> Kurallar:
+> - Sadece Python standart kütüphanesi kullan.
+> - Kod başlangıç seviyesinde ve okunabilir olsun; sözlü sınavda her satırı
+>   açıklayacağım, o yüzden gereksiz ileri teknik (class, lambda, list
+>   comprehension zinciri) kullanma.
+> - Yorumlar Türkçe olsun.
 
 Şimdilik kod yazma. Önce şunları ver:
 1. Programın sözde kodu (pseudocode)
@@ -130,3 +130,69 @@ csv_kaydet() fonksiyonunu with open yapısına çevirdi.
   (ekran_goruntuleri/02_nan_duzeltildi.png).
 - Çıkardığım ders: YZ'nin "test ettim" demesi yeterli değil, uç
   durumları kendim denemem gerekiyor.
+
+
+  ---
+
+## Prompt 4 – Tasarım belgesini koda uyumlu hale getirme
+
+**Prompt:**
+> Evet, TASARIM.md'deki sayi_al sözde koduna ve gerekiyorsa akış şemasına
+> sonlu sayı (nan/inf) kontrolünü ekle. Kodda başka bir şeyi değiştirme.
+
+**YZ'nin yanıtı (özet):**
+Sözde koda sonlu sayı kontrolünü ekledi ve bu kontrolün neden negatiflik
+testinden önce gelmesi gerektiğini yorum olarak yazdı. Akış şemasında yeni
+bir dal açmadı; yalnızca "Girdi geçerli mi?" kutusunun tanımını genişletti.
+Fonksiyon tablosunu da güncelledi.
+
+**Kararım:** Kabul
+
+**Gerekçe:**
+- Tasarım belgesi koddan geri kalırsa rapordaki akış şeması gerçek programı
+  yansıtmaz; ikisinin tutarlı olması gerekiyordu.
+- Akış şemasına yeni dal eklememesini doğru buldum: hatalı girdi döngüsü
+  zaten mevcuttu, yeni bir dal şemayı gereksiz yere karmaşıklaştırırdı.
+- git diff ile yalnızca TASARIM.md'nin değiştiğini, koda dokunulmadığını
+  kontrol ettim.
+
+
+  ---
+
+## Prompt 5 – Test senaryolarının hazırlanması
+
+**Prompt:**
+> TESTLER.md dosyası oluştur. İçinde şu sütunlardan oluşan bir test tablosu olsun:
+No | Senaryo | Girdi | Beklenen sonuç | Gerçek sonuç | Durum
+
+10 senaryo yaz, en az 5'i hatalı veya uç girdi olsun. Şunları mutlaka kapsa:
+- Normal ürün (150 / 2,5 / 80 / 25) ve beklenen hesap sonuçları
+- Virgüllü ondalık girdi
+- Harf girdisi (abc)
+- Negatif sayı
+- Hammaddeye 0
+- Kâr oranına 0 (kabul edilmeli, değerlendirme "Düşük")
+- nan / inf
+- Boş ürün adı
+- Menüde geçersiz seçim (örn. 7)
+- Ürün yokken listeleme ve CSV kaydetme
+
+"Gerçek sonuç" ve "Durum" sütunlarını BOŞ bırak; testleri ben çalıştırıp
+dolduracağım. Testleri kendin çalıştırma. Tablonun altına "En zor hata"
+başlığıyla boş bir bölüm ekle.
+
+**YZ'nin yanıtı (özet):**
+TESTLER.md dosyasında 10 senaryo hazırladı: 1 normal, 1 sınır değer
+(kâr oranı 0), 1 biçim (virgüllü ondalık), 7 hatalı/uç girdi. "Gerçek
+sonuç" sütununu istediğim gibi boş bıraktı. Ekranda yuvarlama nedeniyle
+1 kuruşluk fark olabileceğini ve ekranda ondalık ayırıcının nokta, CSV'de
+virgül olduğunu belirtti.
+
+**Kararım:** Kabul
+
+**Gerekçe:**
+- Senaryoları ve beklenen sonuçları YZ'ye yazdırdım ama testleri kendisine
+  çalıştırtmadım. Prompt 3'teki deneyimden sonra doğrulamayı kendim
+  yapmaya karar verdim.
+- Beklenen hesap sonuçlarını elle kontrol ettim
+  (271,50 × 1,125 = 305,4375 → ekranda 305,44).

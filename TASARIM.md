@@ -102,6 +102,10 @@ FONKSİYON sayi_al(mesaj, sifir_olabilir):
         EXCEPT ValueError:
             "Lütfen bir sayı girin" uyarısı yaz
             CONTINUE                 # baştan sor
+        IF sayi sonlu değil:         # "nan", "inf", "1e400" -> math.isfinite
+            "Geçerli bir sayı girin" uyarısı yaz
+            CONTINUE                 # bu kontrol negatiflik testinden ÖNCE olmalı,
+                                     # çünkü nan < 0 karşılaştırması her zaman YANLIŞ'tır
         IF sayi < 0:
             "Negatif değer girilemez" uyarısı yaz
             CONTINUE
@@ -134,7 +138,7 @@ flowchart TD
     D --> E{"secim nedir?"}
 
     E -->|1| F[/"Ürün bilgilerini sor<br/>ad, hammadde, süre, ücret, kâr oranı"/]
-    F --> G{"Girdi geçerli mi?"}
+    F --> G{"Girdi geçerli mi?<br/>sayıya çevrilebilir, sonlu,<br/>negatif değil"}
     G -->|Hayır| H[/"Uyarı ver"/]
     H --> F
     G -->|Evet| I["İşçilik = süre * ücret<br/>Maliyet = hammadde + işçilik<br/>Fiyat = maliyet * (1 + kâr oranı/100)<br/>Kâr = fiyat - maliyet<br/>Gerçek marj = kâr / fiyat * 100"]
@@ -180,7 +184,7 @@ flowchart TD
 |---|---|---|---|
 | `menu_goster()` | — | `None` | Menü seçeneklerini ekrana yazar |
 | `metin_al(mesaj)` | `mesaj: str` | `str` | Boş olmayan metin alana kadar sorar (ürün adı için) |
-| `sayi_al(mesaj, sifir_olabilir)` | `mesaj: str`, `sifir_olabilir: bool` | `float` | Geçerli, negatif olmayan sayı alana kadar sorar; virgüllü girdiyi kabul eder, `try/except ValueError` ile çökmeyi önler |
+| `sayi_al(mesaj, sifir_olabilir)` | `mesaj: str`, `sifir_olabilir: bool` | `float` | Geçerli, sonlu ve negatif olmayan sayı alana kadar sorar; virgüllü girdiyi kabul eder, `try/except ValueError` ile çökmeyi önler, `math.isfinite()` ile `nan`/`inf` değerleri reddeder |
 | `iscilik_maliyeti_hesapla(sure, saatlik_ucret)` | `float, float` | `float` | `sure * saatlik_ucret` |
 | `toplam_maliyet_hesapla(hammadde, iscilik)` | `float, float` | `float` | `hammadde + iscilik` |
 | `satis_fiyati_hesapla(toplam_maliyet, kar_orani)` | `float, float` | `float` | `toplam_maliyet * (1 + kar_orani / 100)` |
