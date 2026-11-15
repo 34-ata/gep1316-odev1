@@ -25,9 +25,8 @@ PROGRAM urun_maliyet_hesaplayici
 
   BAŞLANGIÇ
     urunler = boş liste          # tüm ürünler burada tutulur
-    devam = DOĞRU
 
-    WHILE devam = DOĞRU:
+    WHILE DOĞRU:                             # çıkış seçilene kadar döner
         menüyü ekrana yaz
         secim = kullanıcıdan metin al
 
@@ -70,20 +69,20 @@ PROGRAM urun_maliyet_hesaplayici
                 IF dosya_adi ".csv" ile bitmiyor:
                     dosya_adi = dosya_adi + ".csv"
                 TRY:
-                    dosyayı yazma modunda aç (encoding = utf-8-sig)
-                    ayırıcısı ";" olan CSV yazıcı oluştur
-                    başlık satırını yaz
-                    FOR her urun IN urunler:
-                        sayıları "2 ondalık, ondalık ayırıcı virgül" biçimine çevir
-                        satırı yaz
-                    dosyayı kapat
+                    WITH dosyayı yazma modunda aç (encoding = utf-8-sig):
+                        ayırıcısı ";" olan CSV yazıcı oluştur
+                        başlık satırını yaz
+                        FOR her urun IN urunler:
+                            sayıları "2 ondalık, ondalık ayırıcı virgül" biçimine çevir
+                            satırı yaz
+                    # WITH bloğu bitince dosya otomatik kapanır
                     "Rapor kaydedildi" yaz
                 EXCEPT dosya hatası (OSError):
                     "Dosya yazılamadı" uyarısı yaz
 
         ELSE IF secim = "4":                     # çıkış
             "Programdan çıkılıyor" yaz
-            devam = YANLIŞ
+            BREAK                            # döngüden çıkılır, program biter
 
         ELSE:
             "Geçersiz seçim, 1-4 arası girin" uyarısı yaz
